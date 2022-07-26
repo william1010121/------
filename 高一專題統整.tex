@@ -1,0 +1,485 @@
+\documentclass[12pt]{ctexart}
+%\setmainfont{標楷體}
+%\usepackage{ctex}
+
+\usepackage{xcolor}
+\usepackage{amsmath} %數學庫
+\usepackage{setspace}
+\usepackage{fancyhdr} %排版用，頁數
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue]{hyperref}
+
+\usepackage{graphicx} %插入图片的宏包
+\usepackage{float} %设置图片浮动位置的宏包
+\usepackage{subfigure} %插入多图时用子图显示的宏包
+\usepackage{chngpage}
+
+
+%--------------------color---------------------------%
+\definecolor{group_color_1}{HTML}{1D4765}
+\definecolor{group_color_2}{HTML}{E5e6e1}
+\definecolor{group_color_3}{HTML}{A7d1d9}
+\definecolor{group_color_4}{HTML}{bebbb7}
+
+%--------------------color---------------------------%
+
+
+%畫流程圖
+\usepackage{tikz, mathpazo}
+\usetikzlibrary{shapes.geometric, arrows}
+
+
+\renewcommand{\baselinestretch}{1.5}
+\renewcommand{\contentsname}{目錄}
+
+\title{ 高一專題統整 }
+\author{ 郭勝威 }
+\date{ \today }
+
+\begin{document}
+
+%----------------初始化------------------%
+
+%--------流程圖樣式---------------%
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered,text=white, draw=black, fill=group_color_1]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_2]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_3]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_4]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+%--------流程圖樣式---------------%
+
+
+%---------縮放------------%
+\tikzset{global scale/.style={
+    scale=#1,
+    every node/.append style={scale=#1}
+  }
+}
+%---------縮放------------%
+
+%---------------初始化-------------------%
+\pagestyle{empty}
+\maketitle
+
+\thispagestyle{empty}
+
+
+\clearpage
+\tableofcontents
+
+\pagestyle{plain}
+\setcounter{page}{0}
+
+\clearpage
+\section{ 序言 }
+
+高一轉瞬即逝， 
+當我回顧一年來的收穫，
+不知不覺中就做了許多小專案，
+每一個專案都是心血來潮才開始的，
+實作時，
+總會遇到許多問題，
+不過我會投入許多的時間去思考不同的解決方案，
+抑或從網路上尋找解答，
+我相信這一點一滴了累積，
+即使不起眼，
+但仍代表我的進步
+
+\hspace*{\fill}\\
+
+我把這一年所做的專案分成六個部分，
+大部分都是由\textit{python}實作的，
+網頁則是用\textit{html, css, javascript}實作，
+\hyperref[sec::crawler]{爬蟲}的大部分都是為了讓自己可以輕鬆一點，
+其他的地方則是可以因為自己的好奇心而去研究的，
+每一個專案都至少花了\textbf{10hr} 以上，
+不過卻都沒有很完整，
+都還有許多空間可以改進，
+不過許多都因為自己的能力未到而尚須時間，
+就先把這些託付給未來的我了。
+
+
+
+\clearpage
+\section{ 爬蟲 }
+\label{sec::crawler}
+
+\subsection{實作流程} 
+實作流程都相差無幾，可以使用下面這張圖來代表
+\hspace*{\fill}\\
+
+
+%-------------------------流程圖實作-----------------------------%
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=2cm][H]
+ %定义流程图具体形状
+\node (start) [startstop] {觀察網頁};
+\node (in1) [process, below of=start] {分析流程};
+\node (pro1) [process, below of=in1] { 開始寫程式 };
+\node (dec1) [decision, below of=pro1, yshift=-0.5cm] { 遇到問題};
+\node (dec2) [decision, below of=dec1, yshift=-1cm] { 進行測試};
+\node (pro2b) [process, right of=dec1, xshift=2cm] { 學習新知識};
+\node (stop) [startstop, below of=dec2, yshift=-0.5cm] {成果};
+
+ %连接具体形状
+\draw [arrow](start) -- (in1);
+\draw [arrow](in1) -- (pro1);
+\draw [arrow](pro1) -- (dec1);
+\draw [arrow](dec1) -- (dec2);
+\draw [arrow](dec1) -- (pro2b);
+\draw [arrow](dec1) -- node[anchor=west] {No} (dec2);
+\draw [arrow](dec1) -- node[anchor=south] {Yes} (pro2b);
+\draw [arrow](pro2b) |- (pro1);
+\draw [arrow] (stop) to [bend left=60] (start) node[anchor=east, yshift=-4.7cm, xshift=-3cm]{改進};
+\draw [arrow](dec2) -| node[ anchor=south, xshift=-1.75cm ]{fail}(pro2b);
+\draw [arrow](dec2) -- node[ anchor=west ]{Access}(stop);
+
+\end{tikzpicture}
+\end{figure}
+%-------------------------流程圖實作-----------------------------%
+
+
+
+\subsection{ 抓取解題網站的資料}
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+    因為我有擔任程式設計的教學，
+    所以常常需要出題，
+    而解題網站 \href{https://cses.fi/}{CSES} 有許多很好的題目，
+    所以我有時會把裡面的題目翻譯然後搬到 \href{https://dandanjudge.fdhs.tyc.edu.tw/}{DDJ}上，
+    但是\textbf{CSES}裡面的測資是.txt的，
+    還要一個一個下載下來，
+    而\textbf{DDJ}要求的是.in, .out檔，
+    所以我決定寫個程式把檔案下載下來然後改成.in, .out檔
+\end{adjustwidth}
+
+\paragraph{ 遇到的困難和解決方式 }
+\begin{adjustwidth}{2em}{0em}
+    一開始的時候，
+    因為才剛開始寫\textit{python}，
+    所以程式碼十分冗長，
+    我自己也看不太懂，
+    所以之後就開始嘗試把許多東西變成函式，
+    意外的發現挺方便的。
+\end{adjustwidth}
+
+\paragraph{學到的事情}
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 開始嘗試用\textit{python}拼出想要的功能
+    \item 學會使用\textit{urllib}庫，
+    \item 學會使用\textit{with...open...}來開啟和寫入檔案
+    \item 如何觀察\textit{html}文檔
+\end{enumerate}
+\end{adjustwidth}
+
+\clearpage
+\paragraph{過程}
+\hspace*{\fill}\\
+
+%---------------2.2流程圖------------------------%
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm][H]
+
+\node (start) [startstop]  { 觀察CSES };
+\node (pro1) [process, below of=start, yshift=-1.5cm] { 寫程式 };
+\node (problem_2) [ process, below of=pro1, yshift=-0.5cm ] {學習\textit{urllib}庫};
+\node (problem_1) [ process, left of=problem_2, xshift=-1.5cm ] {學習\textit{html}庫};
+\node (problem_3) [ process, right of=problem_2, xshift=1.5cm ] {學習函式編程};
+\node (test) [ process, below of=problem_2, yshift=-0.5cm ] {成果和測試};
+\node (stop) [ startstop, below of=test, yshift=-1.5cm] {一個段落};
+
+\draw [arrow](start) -- (pro1);
+\draw [arrow](pro1) -| (problem_1);
+\draw [arrow](pro1) -- (problem_2);
+\draw [arrow](pro1) -| node[anchor=east, yshift=-1.5cm]{程式碼冗長}  (problem_3);
+\draw [arrow](problem_1) -- (test);
+\draw [arrow](problem_2) -- (test);
+\draw [arrow](problem_3) -- (test);
+\draw [arrow](test) -- (stop);
+\draw [arrow, dash pattern=on 20pt off 20pt, dash phase=10pt, ultra thick](stop) to [out=0, in=0, xshift=2] node[anchor=west]{新的想法?}(start);
+
+\end{tikzpicture}
+\end{figure}
+
+%---------------2.2流程圖------------------------%
+
+\clearpage
+\paragraph{改進空間}
+\begin{enumerate}
+    \item 
+        因為我實作登陸是用\textit{cookie}，
+        每一次都需要複製網站上的\textit{cookie}，
+        所以可以使用\textit{session}之類的庫把他改成輸入帳號跟密碼就可以登錄。
+    \item 
+        通用的改進: 我想要把他弄出圖形化介面
+\end{enumerate}
+
+\paragraph{心得}
+\begin{adjustwidth}{2em}{0em}
+    這一次實作的功能十分簡單，
+    只有使用\textit{python}爬取檔案，
+    然後寫入而已。
+    不過仍花了我許多時間，
+\end{adjustwidth}
+
+
+\clearpage
+
+\subsection{ 自動機器人 }
+
+%\paragraph{ 實作動機 }
+%\paragraph{ 遇到的困難和解決方式 }
+%\paragraph{ 學到的事情 }
+%t\paragraph{ 過程 }
+
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+    之前因為疫情所以開始了線上上課，
+    但是每一次上課的時候都須找尋找 google meet 的連結，
+    十分的不方便，
+    因此我就萌生了一個想法:
+    可不可以在每節下課的時候發出下一節上課的meet，
+    讓他自動把連結送到聊天室，
+    這樣除了我自己可以方便的進教室外，
+    其他同學也一樣可以方便的使用。
+\end{adjustwidth}
+
+\paragraph{遇到的困難}
+\begin{adjustwidth}{2em}{0em}
+
+message api:
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        實作message api的時候發現要伺服器 $\implies$ 使用\href{https://www.heroku.com/}{\textbf{heroku}}
+    \item 
+        需要一個群組才能開始傳送訊息 $\implies$ 這時候我決定換一個做法
+\end{enumerate}
+\end{adjustwidth}
+
+
+\hspace*{\fill}\\
+selenium庫: 
+
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item
+        網頁十分複雜，不知道哪一個地方代表按鈕$\implies$ 研究了很久之後發現他們是直接用div來表示按鈕
+\end{enumerate}
+\end{adjustwidth}
+
+\end{adjustwidth}
+
+\paragraph{ 學到的事情 }
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        學會了如何分析更複雜的網頁
+    \item
+        學會了使用\textit{selenium}庫
+\end{enumerate}
+
+    
+\end{adjustwidth}
+
+\clearpage
+\paragraph{ 過程 }
+\hspace*{\fill}\\
+
+%----------------2.3流程圖-------------------%
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm, global scale=0.7][H]
+
+\node (start) [startstop] {想法萌出};
+\node (find_method) [process, below of=start] {探索可能的方法};
+\node (message_api) [process, below of=find_method,xshift=-5cm] {message api};
+\node (python_selenium) [process, right of=message_api, xshift=7cm] {python selenium};
+
+%---message_api problem---%
+\node (need_server)  [align=center, process, below of=message_api, xshift=-2.5cm] {需要一個\\伺服器};
+\node (need_message_group) [process, align=center, right of=need_server, xshift=2cm] {需要一\\個群組};
+%---message_api problem---%
+
+%---python selenium problem---%
+\node (complex_web) [align=center, process, below of=python_selenium] {網頁\\複雜};
+%---python selenium problem---%
+    
+%-----the thing I get-------%
+\node (give_up_message_api) [align=center, startstop, below of=message_api, yshift=-3cm] {把想法擱置};
+\node (start_learning_selenium) [align=center, process, below of=complex_web] {開始學習\\selenium};
+%-----the thing I get-------%
+
+%-------end-------%
+\node (selenium_test) [align=center, process, below of=start_learning_selenium] {測試};
+\node (have_end) [align=center, startstop, below of=selenium_test] {成果};
+%-------end-------%
+
+%-------draw the flowchart-------%
+\draw [arrow] (start) -- (find_method);
+\draw [arrow] (find_method) -- (message_api);
+\draw [arrow] (find_method) -- (python_selenium);
+
+\draw [arrow] (message_api) -- (need_server);
+\draw [arrow] (message_api) -- (need_message_group);
+\draw [arrow] (need_server) -- (give_up_message_api);
+\draw [arrow] (need_message_group) -- (give_up_message_api);
+
+\draw [arrow] (python_selenium) -- (complex_web);
+\draw [arrow] (complex_web) -- node[anchor=west, align=center]{花了許多\\時間理解} (start_learning_selenium) ;
+
+\draw [arrow] (start_learning_selenium) -- (selenium_test);
+\draw [arrow] (selenium_test) -- (have_end);
+%-------draw the flowchart-------%
+
+
+\end{tikzpicture}
+\end{figure}
+
+%----------------2.3流程圖-------------------%
+
+\clearpage
+\subsection{心得}
+這個專案是我第一次研究大型公司的網頁，
+我發現他們的網頁都十分的複雜，
+無論是元素的命名，
+還是他作用的方式，
+都大幅的讓我了解到自己的不足，
+對網頁的了解還只是皮毛，
+更加深了我對網頁的興趣。
+
+\subsection{改進}
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item
+        現在的程式仍需要每天清自去點開來執行，
+        有些許的不方便
+    \item 
+        在修改課程的時候有寫麻煩，
+        在使用的最後幾天因為調課頻繁的原因出了許多差錯，
+        應該可以在多做一個程式來專門修改課程
+    \item  
+        圖形化介面
+\end{enumerate}
+\end{adjustwidth}
+
+
+
+\clearpage
+\subsection{ 密碼破解 }
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+    在學了許多的知識之後，
+    有時候總會冒出一些奇妙的想法，
+    在學校的時後，
+    我發現有些幹部他們登陸時候的密碼十分的簡單，
+    許多都只有四位數，
+    於是我就萌生了一個想法，
+    是不是可以透過程式來破解密碼，
+    稍微計算了一下，
+    如果每秒鐘請求十次的話，
+    對於四位數的密碼共需要請求約1000秒，
+    也就是16分鐘，
+    是在可以接受的範圍，
+    於是我就開始打程式了
+\end{adjustwidth}
+
+\paragraph{ 遇到的困難和解決方式 }
+\begin{adjustwidth}{2em}{0em}
+    這次因為只是簡單的嘗試所以沒有遇到什麼困難，
+    不過為了確保不會讓學校網站當掉所以有壓低了請求速率。
+\end{adjustwidth}
+\paragraph{ 學到的事情 }
+\begin{adjustwidth}{2em}{0em}
+    在實作過後我學到了\textbf{密碼一定要好好設}，
+    如果只有數字而且只有四位數的話，
+    雖然看起來很難被猜到，
+    不過對於電腦來說只是幾分鐘的事情，
+    同時也因為了這次嘗試，
+    我開始對網路安全有了些許興趣，
+    也有開始去學習一些漏洞向觀的知識(譬如: xss, sql注入..., ddos)
+\end{adjustwidth}
+
+\clearpage
+
+\paragraph{ 過程 }
+
+\hspace*{\fill}\\
+%--------flow chart 2.5------------%
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm][H]
+
+\node (start) [startstop] {觀察};
+\node (caculate) [process, below of=start] {計算流量};
+\node (coding) [process, below of=caculate] {打程式};
+\node (end) [process, below of=coding] {測試};
+\node (final) [startstop, below of=end] {成品};
+\node (think2) [startstop, align=center, below of=final] {了解到了設定\\密碼的重要性};
+\node (think1) [startstop, align=center, left of=think2, xshift=-3cm] {對網路安全\\有了興趣};
+\node (think3) [startstop, align=center, right of=think2, xshift=3cm] {學習到了\\許多漏洞};
+
+\draw [arrow](start) -- (caculate);
+\draw [arrow](caculate) -- (coding);
+\draw [arrow](coding) -- (end);
+\draw [arrow](end) -- (final);
+\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think2);
+\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think1);
+\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think3);
+
+
+\end{tikzpicture}
+\end{figure}
+%--------flow chart 2.5------------%
+
+
+\clearpage
+\subsection{ 校內廣播 }
+\clearpage
+\subsection{ 排名爬取 }
+
+
+
+\clearpage
+\section{ 遊戲}
+\label{sec::game}
+\subsection{ 貪吃蛇 (python) }
+\clearpage
+\subsection{ 貪吃蛇 (c++) }
+
+\clearpage
+\section{ 網頁製作 }
+\label{ sec::website }
+\subsection{ 乘法練習網站 }
+\clearpage
+\subsection{ 決策器製作 }
+\clearpage
+\subsection{ 數學公式製作 }
+
+\clearpage
+\section{ 應用程式製作 }
+\label{ sec::app }
+\subsection{ 搜尋單字 (半完成) }
+
+
+\clearpage
+\section{ manim 動畫製作 }
+\label{ sec::animate }
+\subsection{ 餘弦證明動畫 }
+\clearpage
+\subsection{ 圓周弦與弧的性質 }
+
+
+
+\clearpage
+\section{ 人工智慧 }
+\label{ sec::AI }
+\subsection{ MINST手寫辨識 }
+\clearpage
+\subsection{ 個人思考 }
+
+\end{document}
