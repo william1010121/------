@@ -40,10 +40,10 @@
 %----------------初始化------------------%
 
 %--------流程圖樣式---------------%
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered,text=white, draw=black, fill=group_color_1]
-\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_2]
-\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_3]
-\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_4]
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered,text=white, draw=black, fill=group_color_1, text width=3cm]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_2, text width=3cm]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_3, text width=3cm]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_4, text width=3cm]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 %--------流程圖樣式---------------%
 
@@ -55,6 +55,14 @@
   }
 }
 %---------縮放------------%
+
+%---------設置最大節點䥗度------------%
+\tikzset {
+MaxWidth3/.style={
+    text width=3cm
+}
+}
+%---------設置最大節點䥗度------------%
 
 %---------------初始化-------------------%
 \pagestyle{empty}
@@ -111,13 +119,13 @@
 %-------------------------流程圖實作-----------------------------%
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=2cm][H]
+\begin{tikzpicture}[node distance=3cm, global scale=0.7][H]
  %定义流程图具体形状
 \node (start) [startstop] {觀察網頁};
 \node (in1) [process, below of=start] {分析流程};
 \node (pro1) [process, below of=in1] { 開始寫程式 };
 \node (dec1) [decision, below of=pro1, yshift=-0.5cm] { 遇到問題};
-\node (dec2) [decision, below of=dec1, yshift=-1cm] { 進行測試};
+\node (dec2) [decision, below of=dec1, yshift=-2cm] { 進行測試};
 \node (pro2b) [process, right of=dec1, xshift=2cm] { 學習新知識};
 \node (stop) [startstop, below of=dec2, yshift=-0.5cm] {成果};
 
@@ -130,7 +138,7 @@
 \draw [arrow](dec1) -- node[anchor=west] {No} (dec2);
 \draw [arrow](dec1) -- node[anchor=south] {Yes} (pro2b);
 \draw [arrow](pro2b) |- (pro1);
-\draw [arrow] (stop) to [bend left=60] (start) node[anchor=east, yshift=-4.7cm, xshift=-3cm]{改進};
+\draw [arrow] (stop) to [bend left=60]  node[anchor=east]{改進} (start);
 \draw [arrow](dec2) -| node[ anchor=south, xshift=-1.75cm ]{fail}(pro2b);
 \draw [arrow](dec2) -- node[ anchor=west ]{Access}(stop);
 
@@ -592,15 +600,261 @@ selenium庫:
 \subsection{ 學測單字爬取 (一整年的最終成果) }
 \subsubsection{序言}
 這一個專案是我目前做過最大的一個專案，
-
-
+程式碼超過了500行，
+也是我第一次把我學到的幾乎所有東西都用上了，
+也學到了更多的新事物，
+雖然這個專案可能沒有如此的龐大，
+但對於我在探索程式的道路上還是有了深遠的影響。
 
 
 \subsubsection{ 實作動機 }
-\subsubsection{ 遇到的困難和解決方式 }
-\subsubsection{ 學到的事情 }
-\subsubsection{ 過程 }
+一切的起因是因為同學一句: 「學測英文是不是沒有範圍阿?」，
+這引起了我的好奇心，
+所以我就很認真的去查了學測的範圍，
+發現其實每一科都有很明確的範圍的，
+我也發現到英文科其實有特別明定\href{https://www.ceec.edu.tw/SourceUse/ce37/ce37.htm}{7000單}的範圍，
+所以我就萌生了想法，
+我是不是可以先把\href{https://www.ceec.edu.tw/SourceUse/ce37/ce37.htm}{7000單}下載下來，
+然後透過\href{https://dictionary.cambridge.org/zht/}{劍橋字典}，
+把每個單字都找出他的\textbf{用法}、\textbf{片語}、\textbf{詞性}、\textbf{同義字}....，
+存下來，
+之後就看要\textbf{做網頁}、\textbf{應用程式}、\textbf{單純的執行檔}，
+都可以，
+於是我就開始了盡情揮灑創意的實作了。
 
+
+\subsubsection{ 遇到的困難和解決方式 }
+\clearpage
+\begin{figure}[H]
+\begin{tikzpicture}[
+    node distance=0cm,
+    global scale=0.5,
+][H]
+
+%------------------------------ Get The Word ------------------------------%
+%------------get the words------------%
+\def\GlobalxShift{5cm};
+\def\GlobalyShift{1cm};
+\node (GetTheWord) [startstop] {單字獲取};
+\node (GetTheWord_how) [process, right of=GetTheWord, xshift={\GlobalxShift}, yshift={\GlobalyShift*2}]{如何獲取};
+\node (GetTheWord_split) [process, right of=GetTheWord, xshift={\GlobalxShift}, yshift={-\GlobalyShift*2}] {分解};
+
+%-------------get the word how sub-------%
+\node (GetTheWord_how_type) [process, right of=GetTheWord_how, xshift={\GlobalxShift}, yshift={\GlobalyShift}]{手打?};
+\node (GetTheWord_how_program) [process, right of=GetTheWord_how, xshift={\GlobalxShift}, yshift={-\GlobalyShift}] {程式?};
+
+%---get the word subsub---%
+\node (GetTheWord_how_solution) [process, right of=GetTheWord_how, xshift={\GlobalxShift*2}] {發現可以全選製到\textit{.txt}檔，但需要處理文字};
+\node (GetTheWord_how_think) [process, right of=GetTheWord_how, xshift={\GlobalxShift*3}] {其實有些事情不需要想的太複雜};
+%----get the word subsub---%
+
+
+%------------get the word how sub-------%
+
+
+
+%------get the word split--------%
+\node (GetTheWord_split_analyze) [process, right of=GetTheWord_split, xshift={\GlobalxShift*2}] {用程式把單字轉成.json檔};
+\node (GetTheWord_split_think) [process, right of=GetTheWord_split_analyze, xshift={\GlobalxShift}] {決定把一個程式執行一個功能，最後一次使用};
+
+%------get the word split--------%
+
+
+%-----make flow chart of Get the word------%
+\draw [->] (GetTheWord.east) -- (GetTheWord_how.west);
+\draw [->] (GetTheWord.east) -- (GetTheWord_split.west);
+
+\draw [->] (GetTheWord_how.east) -- (GetTheWord_how_type.west);
+\draw [->] (GetTheWord_how.east) -- (GetTheWord_how_program.west);
+
+\draw [->] (GetTheWord_how_type.east) -- (GetTheWord_how_solution.west);
+\draw [->] (GetTheWord_how_program.east) -- (GetTheWord_how_solution.west);
+\draw [->] (GetTheWord_how_solution.east) -- (GetTheWord_how_think.west);
+
+
+\draw [->] (GetTheWord_split.east) -- (GetTheWord_split_analyze.west);
+\draw [->] (GetTheWord_split_analyze.east) -- (GetTheWord_split_think.west);
+%-----make flow chart of Get the Word------%
+
+%------------------------------ Get The Word ------------------------------%
+
+
+
+%------------------------------ Find Ways ------------------------------%
+
+\node (FindWay) [startstop, below of=GetTheWord, yshift={-\GlobalyShift*10}] {研究方法};
+
+%---------- Way 1 ----------%
+\node (FindWay_Way1) [process, right of=FindWay, xshift={\GlobalxShift}, yshift={3*\GlobalyShift}] {代理ip};
+\node (FindWay_Way1_problem) [process, right of=FindWay_Way1, xshift={\GlobalxShift}] {免費的問題過多, 不穩定};
+%---------- Way 1 ----------%
+
+%---------- Way 2 ----------%
+\node (FindWay_Way2) [process, right of=FindWay, xshift={\GlobalxShift}] {租伺服器};
+\node (FindWay_Way2_problem) [process, right of=FindWay_Way2, xshift={\GlobalxShift}] {過於昂貴且學習成本高};
+
+%---------- Way 2 ----------%
+
+%---------- Way 3 ----------%
+\node (FindWay_Way3) [process, right of=FindWay, xshift={\GlobalxShift}, yshift={-\GlobalyShift*3}] {adsl撥號};
+\node (FindWay_Way3_problem) [process, right of=FindWay_Way3, xshift={\GlobalxShift}] {不知道如何租且須多打更多程式};
+%---------- Way 3 ----------%
+
+
+%---------- Final decision ----------%
+\node (FindWay_solution) [process, right of=FindWay, xshift={\GlobalxShift*3}] {最後還是決定使用家裡的ip，被鎖了之後再思索解決方法};
+\node (FindWay_think) [process, right of=FindWay_solution, xshift={\GlobalxShift}] {雖然繞了一大圈，不過我學到了更多的作法};
+%---------- Final decision ----------%
+
+%---------- Find Ways Flow Chart ----------%
+\draw [->] (FindWay.east)  -- (FindWay_Way1.west);
+\draw [->] (FindWay.east)  --  (FindWay_Way2.west);
+\draw [->] (FindWay.east)  --  (FindWay_Way3.west);
+
+
+\draw [->] (FindWay_Way1.east)  -- (FindWay_Way1_problem.west);
+\draw [->] (FindWay_Way2.east)  -- (FindWay_Way2_problem.west);
+\draw [->] (FindWay_Way3.east)  -- (FindWay_Way3_problem.west);
+
+
+\draw [->] (FindWay_Way1_problem.east) -- (FindWay_solution.west);
+\draw [->] (FindWay_Way2_problem.east) -- (FindWay_solution.west);
+\draw [->] (FindWay_Way3_problem.east) -- (FindWay_solution.west);
+
+\draw [->] (FindWay_solution.east) -- (FindWay_think);
+%---------- Find Ways Flow Chart ----------%
+
+
+
+%------------------------------ Find Ways ------------------------------%
+
+
+%------------------------------ Analyze Web ------------------------------%
+
+\node (AnalyzeWeb) [startstop, below of=FindWay, yshift={-\GlobalyShift*12}] {分析網頁};
+
+%---------- Problem 1 -------- %
+\node (AnalyzeWeb_Problem1) [process, right of=AnalyzeWeb, xshift={\GlobalxShift}, yshift={\GlobalyShift*4}] {網頁複雜};
+\node (AnalyzeWeb_Solution1) [process, right of=AnalyzeWeb_Problem1, xshift={\GlobalxShift}] {用區塊分析} ;
+%---------- Problem 1 -------- %
+
+%---------- Problem 2 -------- %
+\node (AnalyzeWeb_Problem2) [process, right of=AnalyzeWeb, xshift={\GlobalxShift}, align=center] {結構複雜\\難以編程};
+\node (AnalyzeWeb_Solution2) [process, right of=AnalyzeWeb_Problem2, xshift={\GlobalxShift}] {使用工作流};
+
+%---------- Problem 2 -------- %
+
+
+%---------- Problem 3 -------- %
+\node (AnalyzeWeb_Problem3) [process, right of=AnalyzeWeb, xshift={\GlobalxShift}, yshift={-\GlobalyShift*4}] {如何儲存單字相關詞彙};
+\node (AnalyzeWeb_Solution3) [process, right of=AnalyzeWeb_Problem3, xshift={\GlobalxShift}] {巢狀\textit{dictionary}} ;
+%---------- Problem 3 -------- %
+
+
+%---------- Final Think ----------%
+\node (AnalyzeWeb_Think) [process, right of=AnalyzeWeb, xshift={\GlobalxShift*3}] {使用上述的想法但程式碼仍十分雜亂};
+\node (AnalyzeWeb_Summarize) [process, right of=AnalyzeWeb_Think, xshift={\GlobalxShift+1.5cm}, text width=6cm] {雖然效率仍不高，但以第一次爬取並分析大型網頁我覺得已經十分不錯了};
+%---------- Final Think ----------%
+
+%---------- Analyze Web flow Chart ----------%
+\draw [->] (AnalyzeWeb.east) -- (AnalyzeWeb_Problem1.west);
+\draw [->] (AnalyzeWeb.east) -- (AnalyzeWeb_Problem2.west);
+\draw [->] (AnalyzeWeb.east) -- (AnalyzeWeb_Problem3.west);
+
+\draw [->] (AnalyzeWeb_Problem1.east) -- (AnalyzeWeb_Solution1.west);
+\draw [->] (AnalyzeWeb_Problem2.east) -- (AnalyzeWeb_Solution2.west);
+\draw [->] (AnalyzeWeb_Problem3.east) -- (AnalyzeWeb_Solution3.west);
+
+\draw [->] (AnalyzeWeb_Solution1.east) -- (AnalyzeWeb_Think.west);
+\draw [->] (AnalyzeWeb_Solution2.east) -- (AnalyzeWeb_Think.west);
+\draw [->] (AnalyzeWeb_Solution3.east) -- (AnalyzeWeb_Think.west);
+
+
+\draw [->] (AnalyzeWeb_Think) -- (AnalyzeWeb_Summarize);
+%---------- Analyze Web flow Chart ----------%
+
+%------------------------------ Analyze Web ------------------------------%
+
+
+%------------------------------ Download word ------------------------------%
+\node (DownloadWord) [startstop, below of=AnalyzeWeb, yshift={-\GlobalyShift*10}] {下載單字};
+
+
+%---------- Problem 1 -------- %
+\node (DownloadWord_Problem1) [process, right of=DownloadWord, xshift={\GlobalxShift}] {下載到一半時程序出錯(跑到空白單字)};
+\node (DownloadWord_Solution1) [process, right of=DownloadWord_Problem1, xshift={\GlobalxShift}] {下載一定數量之後先儲存下來};
+%---------- Problem 1 -------- %
+
+\node (DownloadWord_Summarize) [process, right of=DownloadWord_Solution1, xshift={\GlobalxShift*2}] {學到遇到突發狀況的時候開怎麼做};  
+
+%---------- Download word ----------%
+\draw [->] (DownloadWord) -- (DownloadWord_Problem1);
+\draw [->] (DownloadWord_Problem1) -- (DownloadWord_Solution1);
+\draw [->] (DownloadWord_Solution1) -- (DownloadWord_Summarize);
+%---------- Download word ----------%
+
+%------------------------------ Download word ------------------------------%
+
+
+%-------------------------------------- Main Flow Chart --------------------------------------%
+\draw [arrow] (GetTheWord) --  node[anchor=west]{擔心ip被鎖}(FindWay);
+\draw [arrow] (FindWay) --  (AnalyzeWeb);
+\draw [arrow] (AnalyzeWeb) -- (DownloadWord);
+
+%-------------------------------------- Main Flow Chart --------------------------------------%
+
+\end{tikzpicture}
+\end{figure}
+
+
+\clearpage
+\subsubsection{ 學到的事情 }
+\begin{enumerate}
+    \item 
+        透過把程式碼變成許多函式+檔案來讓自己可以快速的找到使用的函式
+    \item
+        學到了許多關於ip的事情
+    \item
+        對於中小型項目的檔案分布跟程式碼實作方式有了基本的了解
+    \item 
+        開始嘗試使用許多小小的區塊，
+        透過工作流的方式，
+        把小小的功能集結成一個完整的項目。
+\end{enumerate}
+
+\subsubsection{ 可以改進的方向}
+\begin{enumerate}
+    \item 
+        因為對於一些名詞不太熟悉的緣故，
+        命名命的不太好，
+        只後應該可以把函式命名簡化配合工作流(譬如: work\_flow\_1, work\_flow\_2, work\_flow\_3)
+    \item
+        之後可以使用\textbf{應用程式}、\textbf{網頁}、\textbf{執行檔}來把單字使用上去。
+    \item
+        對於檔案名稱和資料夾的名稱可以再加強，
+    \item 
+        在實作專案之前，
+        可以先把整個檔案的執行過程使用流程圖表示出來，
+        然後把檔案的名稱分配好，
+        讓實作可以變得更加的容易。
+        讓整個檔案可以變得更加的易讀
+\end{enumerate}
+% \begin{enumerate}
+%     \item 
+%         因為對於一些名詞不太熟悉的緣故，
+%         命名命的不太好，
+%         只後應該可以把函式命名簡化配合工作流(譬如: work_flow_1, work_flow_2, work_flow_3)
+%     \item
+%         之後可以使用\textit{應用程式}、\textit{網頁}、\textit{執行檔}來把單字使用上去。
+%     \item
+%         對於檔案名稱和資料夾的名稱可以再加強，
+%         讓整個檔案可以變得更加的易讀
+%     \item 
+%         在實作專案之前，
+%         可以先把整個檔案的執行過程使用流程圖表示出來，
+%         然後把檔案的名稱分配好，
+%         讓實作可以變得更加的容易。
+% \end{enumerate}
 
 
 \clearpage

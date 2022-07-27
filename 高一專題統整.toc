@@ -24,21 +24,33 @@
 \contentsline {paragraph}{ 實作動機 }{11}{paragraph*.18}%
 \contentsline {paragraph}{ 遇到的困難和解決方式 }{11}{paragraph*.19}%
 \contentsline {paragraph}{ 學到的事情 }{11}{paragraph*.20}%
-\contentsline {paragraph}{ 過程 }{11}{paragraph*.21}%
-\contentsline {subsection}{\numberline {2.6} 排名爬取 }{12}{subsection.2.6}%
-\contentsline {subsection}{\numberline {2.7} 學測單字爬取 }{13}{subsection.2.7}%
-\contentsline {section}{\numberline {3} 遊戲}{14}{section.3}%
-\contentsline {subsection}{\numberline {3.1} 貪吃蛇 (python) }{14}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2} 貪吃蛇 (c++) }{15}{subsection.3.2}%
-\contentsline {section}{\numberline {4} 網頁製作 }{16}{section.4}%
-\contentsline {subsection}{\numberline {4.1} 乘法練習網站 }{16}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2} 決策器製作 }{17}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3} 數學公式製作 }{18}{subsection.4.3}%
-\contentsline {section}{\numberline {5} 應用程式製作 }{19}{section.5}%
-\contentsline {subsection}{\numberline {5.1} 搜尋單字 (半完成) }{19}{subsection.5.1}%
-\contentsline {section}{\numberline {6} manim 動畫製作 }{20}{section.6}%
-\contentsline {subsection}{\numberline {6.1} 餘弦證明動畫 }{20}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2} 圓周弦與弧的性質 }{21}{subsection.6.2}%
-\contentsline {section}{\numberline {7} 人工智慧 }{22}{section.7}%
-\contentsline {subsection}{\numberline {7.1} MINST手寫辨識 }{22}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2} 個人思考 }{23}{subsection.7.2}%
+\contentsline {paragraph}{ 意外的發現 }{11}{paragraph*.21}%
+\contentsline {paragraph}{ 過程 }{12}{paragraph*.22}%
+\contentsline {paragraph}{改進的方向}{13}{paragraph*.23}%
+\contentsline {subsection}{\numberline {2.6} 排名爬取 }{14}{subsection.2.6}%
+\contentsline {paragraph}{ 實作動機 }{14}{paragraph*.24}%
+\contentsline {paragraph}{ 遇到的困難和解決方式 }{14}{paragraph*.25}%
+\contentsline {paragraph}{ 學到的事情 }{14}{paragraph*.26}%
+\contentsline {paragraph}{ 過程 }{15}{paragraph*.27}%
+\contentsline {paragraph}{ 可改進的方向 }{16}{paragraph*.28}%
+\contentsline {subsection}{\numberline {2.7} 學測單字爬取 (一整年的最終成果) }{17}{subsection.2.7}%
+\contentsline {subsubsection}{\numberline {2.7.1}序言}{17}{subsubsection.2.7.1}%
+\contentsline {subsubsection}{\numberline {2.7.2} 實作動機 }{17}{subsubsection.2.7.2}%
+\contentsline {subsubsection}{\numberline {2.7.3} 遇到的困難和解決方式 }{17}{subsubsection.2.7.3}%
+\contentsline {subsubsection}{\numberline {2.7.4} 學到的事情 }{19}{subsubsection.2.7.4}%
+\contentsline {subsubsection}{\numberline {2.7.5} 可以改進的方向}{19}{subsubsection.2.7.5}%
+\contentsline {section}{\numberline {3} 遊戲}{20}{section.3}%
+\contentsline {subsection}{\numberline {3.1} 貪吃蛇 (python) }{20}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2} 貪吃蛇 (c++) }{21}{subsection.3.2}%
+\contentsline {section}{\numberline {4} 網頁製作 }{22}{section.4}%
+\contentsline {subsection}{\numberline {4.1} 乘法練習網站 }{22}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2} 決策器製作 }{23}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3} 數學公式製作 }{24}{subsection.4.3}%
+\contentsline {section}{\numberline {5} 應用程式製作 }{25}{section.5}%
+\contentsline {subsection}{\numberline {5.1} 搜尋單字 (半完成) }{25}{subsection.5.1}%
+\contentsline {section}{\numberline {6} manim 動畫製作 }{26}{section.6}%
+\contentsline {subsection}{\numberline {6.1} 餘弦證明動畫 }{26}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2} 圓周弦與弧的性質 }{27}{subsection.6.2}%
+\contentsline {section}{\numberline {7} 人工智慧 }{28}{section.7}%
+\contentsline {subsection}{\numberline {7.1} MINST手寫辨識 }{28}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2} 個人思考 }{29}{subsection.7.2}%
