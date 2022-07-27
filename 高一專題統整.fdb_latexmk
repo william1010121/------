@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1658842885 "c:/Users/willi/OneDrive/桌面/學習歷程/學習歷程/資訊/高一專題統整/高一專題統整.tex" "高一專題統整.pdf" "高一專題統整" 1658842889
+["pdflatex"] 1658844538 "c:/Users/willi/OneDrive/桌面/學習歷程/學習歷程/資訊/高一專題統整/高一專題統整.tex" "高一專題統整.pdf" "高一專題統整" 1658844541
   "c:/Users/willi/.texlive2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1653138609 2828208 3deed27f28cc14d5bb451cd1e35725d5 ""
   "c:/Users/willi/AppData/Local/Microsoft/Windows/Fonts/SimHei.ttf" 1651965028 10043912 803a31682e3dbcd6701ae5f01c9d8e76 ""
-  "c:/Users/willi/OneDrive/桌面/學習歷程/學習歷程/資訊/高一專題統整/高一專題統整.tex" 1658842881 15852 e7a1d36c451e32e3dd885f2e06dd4539 ""
+  "c:/Users/willi/OneDrive/桌面/學習歷程/學習歷程/資訊/高一專題統整/高一專題統整.tex" 1658844537 16668 676efc760e04cb0bcd5361b203221ee4 ""
   "c:/Windows/Fonts/msyh.ttc" 1622894706 19647736 ff2e53a6131130a07589812ea5b5b0d0 ""
   "c:/Windows/Fonts/simsun.ttc" 1622894706 17909384 a31f28cad247ad739adf0891b0f2f7f2 ""
   "c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc" 1652951284 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -50,6 +50,7 @@
   "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei6a.tfm" 1651924369 1172 ea35fa13ee483c308a0c68cffa2f52fb ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei6c.tfm" 1651924369 1172 7dd7a6f05321dd25f399ebba47f53887 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei6d.tfm" 1651924368 1172 e5be6419407f0c8504254055afe6a633 ""
+  "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei6e.tfm" 1651924369 1172 bd56dfdf26ff6117dfce95c1a9273b69 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei72.tfm" 1651924368 1172 0743ca7a73b589a0a7b7707340e6c407 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei75.tfm" 1651924368 1172 a25bf5894dd20c7f5582ee012df9c39f ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/zhmetrics/unihei/unihei76.tfm" 1651924368 1172 717e1aab695517230a61456b5d0d4ae0 ""
@@ -326,10 +327,10 @@
   "c:/texlive/2022/texmf-dist/web2c/texmf.cnf" 1652950073 40171 cdab547de63d26590bebb3baff566530 ""
   "c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1651924415 4448422 53302d27d6d34c8e3e97ce3a8b4bdfa7 ""
   "c:/texlive/2022/texmf.cnf" 1651924381 713 e69b156964470283e0530f5060668171 ""
-  "高一專題統整.aux" 1658842888 5368 1a4658297fb6313684a6fa1d67ef1782 "pdflatex"
-  "高一專題統整.out" 1658842888 2734 dc1b7c2ce2a045139b3cac092d952c7f "pdflatex"
-  "高一專題統整.tex" 1658842881 15852 e7a1d36c451e32e3dd885f2e06dd4539 ""
-  "高一專題統整.toc" 1658842888 2859 cdbc73ac5255ac0430341690e496ff5d "pdflatex"
+  "高一專題統整.aux" 1658844540 5885 7a1df471dc9c5103c0761ccd399aa9e2 "pdflatex"
+  "高一專題統整.out" 1658844540 2708 267f766e1b8a14990efa600bcb2143e8 "pdflatex"
+  "高一專題統整.tex" 1658844537 16668 676efc760e04cb0bcd5361b203221ee4 ""
+  "高一專題統整.toc" 1658844540 3171 baec114897309d40f7218099c306f09c "pdflatex"
   (generated)
   "高一專題統整.aux"
   "高一專題統整.log"

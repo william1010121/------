@@ -343,7 +343,8 @@ selenium庫:
 %----------------2.3流程圖-------------------%
 
 \clearpage
-\subsection{心得}
+\paragraph{心得}
+\begin{adjustwidth}{2em}{0em}
 這個專案是我第一次研究大型公司的網頁，
 我發現他們的網頁都十分的複雜，
 無論是元素的命名，
@@ -351,8 +352,8 @@ selenium庫:
 都大幅的讓我了解到自己的不足，
 對網頁的了解還只是皮毛，
 更加深了我對網頁的興趣。
-
-\subsection{改進}
+\end{adjustwidth}
+\paragraph{改進}
 \begin{adjustwidth}{2em}{0em}
 \begin{enumerate}
     \item
@@ -439,8 +440,166 @@ selenium庫:
 
 \clearpage
 \subsection{ 校內廣播 }
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+   因為我是資訊股長，
+   所以要負責看廣播，
+   但有時候會漏看許多的廣播，
+   這時候腦袋內又出現了一個想法，
+   是不是可以透過\textit{python}來進行廣播的確認。
+\end{adjustwidth}
+
+\paragraph{ 遇到的困難和解決方式 }
+\begin{adjustwidth}{2em}{0em}
+    一開始我一直在煩惱要怎麼樣才可以解決登入的問題，
+    在經過了一段時間的尋找之後，
+    我發現\textit{session}這個函式庫可以很好的解決我的問題。
+\end{adjustwidth}
+
+\paragraph{ 學到的事情 }
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        學會使用\textit{session}庫
+    \item 
+        透過觀察網頁了解到學校登陸功能的實作$\implies$
+        透過承載資訊直接傳給網頁，
+\end{enumerate}  
+\end{adjustwidth}
+
+\paragraph{ 意外的發現 }
+\begin{adjustwidth}{2em}{0em}
+    在實作的過程中，
+    使用控制台觀察資料傳遞的過程的時候，
+    發現學校網頁在傳遞的過程中沒有把承載的資料進行收回，
+    雖然不知道會不會造成安全性的問題，
+    不過也是有趣的收穫。
+\end{adjustwidth}
+
+\clearpage
+\paragraph{ 過程 }
+\hspace*{\fill}\\
+%--------------2.5 flow chart---------------%
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm][H]
+\node (start) [startstop] {開始};
+\node (observe)  [process, below of=start, align=center] {觀察網頁\\登陸過程};
+\node (write_and_debug) [process,align=center, below of=observe] {寫程式\&\\debug};
+\node (end) [startstop, below of=write_and_debug] {成品};
+
+
+\draw [arrow] (start) -- (observe);
+\draw [arrow](observe) -- (write_and_debug);
+\draw [arrow] (write_and_debug) -- (end);
+\end{tikzpicture}
+\end{figure}
+
+%--------------2.5 flow chart---------------%
+\clearpage
+\paragraph{改進的方向}
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item
+        希望可以在把資訊爬取下來之後把得到的資訊整理過後再重新放到網頁上面讓班級同學查看
+    \item 
+        透過增加一些程式讓使用程式的時候可以更加方便的更改想要資訊，
+        目前是希望透過一個\textit{setting.json}來進行實作，
+    \item 
+        圖形化介面
+\end{enumerate}
+    
+\end{adjustwidth}
+
+
 \clearpage
 \subsection{ 排名爬取 }
+
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+    由於我是進階助教，
+    所以每次考試之後都需要統計他們的分數，
+    每一次都要逐一的去登記，
+    由於我覺得他十分麻煩，
+    不如直接寫程式把他們的成績爬取下來。
+\end{adjustwidth}
+
+\paragraph{ 遇到的困難和解決方式 }
+\begin{adjustwidth}{2em}{0em}
+    因為登陸的問題在前面已經解決了，
+    所以這次沒有發生什麼特別的困難，
+    只是對於改進沒有什麼想法
+\end{adjustwidth}
+
+\paragraph{ 學到的事情 }
+\begin{enumerate}
+    \item 
+        對於\textit{python}的實作更加的了解
+\end{enumerate}
+
+\clearpage
+\paragraph{ 過程 }
+\hspace*{\fill}\\
+
+%------2.6 flow chart-------%
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm][H]
+\node (start) [startstop] {觀察網頁};
+\node (use_knowlege_make) [process,align=center, below of=start] {使用以前學過的\\\textit{session}來登錄};
+\node (coding) [process, align=center, below of=use_knowlege_make] {開始打程式};
+\node (test) [process, align=center, below of=coding] {測試};
+\node (use_end) [startstop, align=center, below of=test] {成果};
+
+\draw [arrow] (start) -- (use_knowlege_make);
+\draw [arrow] (use_knowlege_make) -- (coding);
+\draw [arrow] (coding) -- (test);
+
+\draw [arrow] (test) to [bend right=90] node[anchor=west]{發現問題} (coding);
+
+\draw [arrow] (test) -- (use_end);
+
+
+\end{tikzpicture}
+\end{figure}
+
+%------2.6 flow chart-------%
+
+\clearpage
+
+\paragraph{ 可改進的方向 }
+\begin{enumerate}
+    \item 
+        這次實作的只有獲得總分，
+        因為如果要獲取每一題的分數的話難度會增加很多，
+        因為比賽時如果拿到滿分的話，
+        顯示出來的是圖片，
+        所以要做的事情就需要多許多。
+    \item
+        圖形化介面
+    \item
+        改善操作使用，
+        因為現在需要把網址一個一個貼上才可以，
+        希望以後可以直接使用比賽的命稱來直接獲得分數
+\end{enumerate}
+
+
+
+
+
+\clearpage
+\subsection{ 學測單字爬取 (一整年的最終成果) }
+\subsubsection{序言}
+這一個專案是我目前做過最大的一個專案，
+
+
+
+
+\subsubsection{ 實作動機 }
+\subsubsection{ 遇到的困難和解決方式 }
+\subsubsection{ 學到的事情 }
+\subsubsection{ 過程 }
 
 
 
