@@ -1,4 +1,4 @@
-\documentclass[12pt]{ctexart}
+\documentclass[12pt,oneside]{ctexart}
 %\setmainfont{標楷體}
 %\usepackage{ctex}
 
@@ -12,6 +12,13 @@
 \usepackage{float} %设置图片浮动位置的宏包
 \usepackage{subfigure} %插入多图时用子图显示的宏包
 \usepackage{chngpage}
+\usepackage{emptypage}
+
+
+\usepackage[margin=2cm]{geometry} %上下左右的流空
+\usepackage{diagbox} %表格的斜線標題
+
+\usepackage{spacingtricks} %表格間距
 
 
 %--------------------color---------------------------%
@@ -26,6 +33,10 @@
 %畫流程圖
 \usepackage{tikz, mathpazo}
 \usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{shapes, shapes.multipart}
+\usetikzlibrary{calc, positioning}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{fit}
 
 
 \renewcommand{\baselinestretch}{1.5}
@@ -39,14 +50,6 @@
 
 %----------------初始化------------------%
 
-%--------流程圖樣式---------------%
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered,text=white, draw=black, fill=group_color_1, text width=3cm]
-\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_2, text width=3cm]
-\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_3, text width=3cm]
-\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_4, text width=3cm]
-\tikzstyle{arrow} = [thick,->,>=stealth]
-%--------流程圖樣式---------------%
-
 
 %---------縮放------------%
 \tikzset{global scale/.style={
@@ -54,7 +57,34 @@
     every node/.append style={scale=#1}
   }
 }
+\tikzset{Decision_shape/.style={
+    trapezium, draw, trapezium left angle=60,
+    trapezium right angle=-60
+}
+}
+
+\tikzset{
+    basic box/.style = {
+        shape=rectangle,
+        align=center, 
+        draw=#1,
+        dashed,
+        thick, 
+        rounded corners
+    }
+}
+
 %---------縮放------------%
+
+
+
+%--------流程圖樣式---------------%
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered,text=white, draw=black, fill=group_color_1, text width=3cm]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_2, text width=3cm]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_3, text width=3cm]
+\tikzstyle{decision} = [Decision_shape, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=group_color_4, text width=3cm]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+%--------流程圖樣式---------------%
 
 %---------設置最大節點䥗度------------%
 \tikzset {
@@ -63,6 +93,9 @@ MaxWidth3/.style={
 }
 }
 %---------設置最大節點䥗度------------%
+
+
+
 
 %---------------初始化-------------------%
 \pagestyle{empty}
@@ -148,7 +181,42 @@ MaxWidth3/.style={
 
 
 
+\clearpage
 \subsection{ 抓取解題網站的資料}
+
+\paragraph{過程}
+\hspace*{\fill}\\
+
+%---------------2.2流程圖------------------------%
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm, global scale=0.9][H]
+
+\node (start) [startstop]  { 觀察CSES };
+\node (pro1) [process, below of=start, yshift=-1.5cm] { 寫程式 };
+\node (problem_2) [ process, below of=pro1, yshift=-0.5cm ] {學習\textit{urllib}庫};
+\node (problem_1) [ process, left of=problem_2, xshift=-1.5cm ] {學習\textit{html}庫};
+\node (problem_3) [ process, right of=problem_2, xshift=1.5cm ] {學習函式編程};
+\node (test) [ process, below of=problem_2, yshift=-0.5cm ] {成果和測試};
+\node (stop) [ startstop, below of=test, yshift=-1.5cm] {一個段落};
+
+\draw [arrow](start) -- (pro1);
+\draw [arrow](pro1) -| (problem_1);
+\draw [arrow](pro1) -- (problem_2);
+\draw [arrow](pro1) -| node[anchor=east, yshift=-1.5cm]{程式碼冗長}  (problem_3);
+\draw [arrow](problem_1) -- (test);
+\draw [arrow](problem_2) -- (test);
+\draw [arrow](problem_3) -- (test);
+\draw [arrow](test) -- (stop);
+\draw [arrow, dash pattern=on 20pt off 20pt, dash phase=10pt, ultra thick](stop) to [out=0, in=0, xshift=2] node[anchor=west]{新的想法?}(start);
+
+\end{tikzpicture}
+\end{figure}
+
+%---------------2.2流程圖------------------------%
+
+\clearpage
 \paragraph{ 實作動機 }
 \begin{adjustwidth}{2em}{0em}
     因為我有擔任程式設計的教學，
@@ -181,40 +249,6 @@ MaxWidth3/.style={
 \end{enumerate}
 \end{adjustwidth}
 
-\clearpage
-\paragraph{過程}
-\hspace*{\fill}\\
-
-%---------------2.2流程圖------------------------%
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=3cm][H]
-
-\node (start) [startstop]  { 觀察CSES };
-\node (pro1) [process, below of=start, yshift=-1.5cm] { 寫程式 };
-\node (problem_2) [ process, below of=pro1, yshift=-0.5cm ] {學習\textit{urllib}庫};
-\node (problem_1) [ process, left of=problem_2, xshift=-1.5cm ] {學習\textit{html}庫};
-\node (problem_3) [ process, right of=problem_2, xshift=1.5cm ] {學習函式編程};
-\node (test) [ process, below of=problem_2, yshift=-0.5cm ] {成果和測試};
-\node (stop) [ startstop, below of=test, yshift=-1.5cm] {一個段落};
-
-\draw [arrow](start) -- (pro1);
-\draw [arrow](pro1) -| (problem_1);
-\draw [arrow](pro1) -- (problem_2);
-\draw [arrow](pro1) -| node[anchor=east, yshift=-1.5cm]{程式碼冗長}  (problem_3);
-\draw [arrow](problem_1) -- (test);
-\draw [arrow](problem_2) -- (test);
-\draw [arrow](problem_3) -- (test);
-\draw [arrow](test) -- (stop);
-\draw [arrow, dash pattern=on 20pt off 20pt, dash phase=10pt, ultra thick](stop) to [out=0, in=0, xshift=2] node[anchor=west]{新的想法?}(start);
-
-\end{tikzpicture}
-\end{figure}
-
-%---------------2.2流程圖------------------------%
-
-\clearpage
 \paragraph{改進空間}
 \begin{enumerate}
     \item 
@@ -243,57 +277,8 @@ MaxWidth3/.style={
 %\paragraph{ 學到的事情 }
 %t\paragraph{ 過程 }
 
-\paragraph{ 實作動機 }
-\begin{adjustwidth}{2em}{0em}
-    之前因為疫情所以開始了線上上課，
-    但是每一次上課的時候都須找尋找 google meet 的連結，
-    十分的不方便，
-    因此我就萌生了一個想法:
-    可不可以在每節下課的時候發出下一節上課的meet，
-    讓他自動把連結送到聊天室，
-    這樣除了我自己可以方便的進教室外，
-    其他同學也一樣可以方便的使用。
-\end{adjustwidth}
-
-\paragraph{遇到的困難}
-\begin{adjustwidth}{2em}{0em}
-
-message api:
-\begin{adjustwidth}{2em}{0em}
-\begin{enumerate}
-    \item 
-        實作message api的時候發現要伺服器 $\implies$ 使用\href{https://www.heroku.com/}{\textbf{heroku}}
-    \item 
-        需要一個群組才能開始傳送訊息 $\implies$ 這時候我決定換一個做法
-\end{enumerate}
-\end{adjustwidth}
 
 
-\hspace*{\fill}\\
-selenium庫: 
-
-\begin{adjustwidth}{2em}{0em}
-\begin{enumerate}
-    \item
-        網頁十分複雜，不知道哪一個地方代表按鈕$\implies$ 研究了很久之後發現他們是直接用div來表示按鈕
-\end{enumerate}
-\end{adjustwidth}
-
-\end{adjustwidth}
-
-\paragraph{ 學到的事情 }
-\begin{adjustwidth}{2em}{0em}
-\begin{enumerate}
-    \item 
-        學會了如何分析更複雜的網頁
-    \item
-        學會了使用\textit{selenium}庫
-\end{enumerate}
-
-    
-\end{adjustwidth}
-
-\clearpage
 \paragraph{ 過程 }
 \hspace*{\fill}\\
 
@@ -349,7 +334,57 @@ selenium庫:
 \end{figure}
 
 %----------------2.3流程圖-------------------%
+\clearpage
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+    之前因為疫情所以開始了線上上課，
+    但是每一次上課的時候都須找尋找 google meet 的連結，
+    十分的不方便，
+    因此我就萌生了一個想法:
+    可不可以在每節下課的時候發出下一節上課的meet，
+    讓他自動把連結送到聊天室，
+    這樣除了我自己可以方便的進教室外，
+    其他同學也一樣可以方便的使用。
+\end{adjustwidth}
 
+
+\paragraph{遇到的困難}
+\begin{adjustwidth}{2em}{0em}
+
+message api:
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        實作message api的時候發現要伺服器 $\implies$ 使用\href{https://www.heroku.com/}{\textbf{heroku}}
+    \item 
+        需要一個群組才能開始傳送訊息 $\implies$ 這時候我決定換一個做法
+\end{enumerate}
+\end{adjustwidth}
+
+
+\hspace*{\fill}\\
+selenium庫: 
+
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item
+        網頁十分複雜，不知道哪一個地方代表按鈕$\implies$ 研究了很久之後發現他們是直接用div來表示按鈕
+\end{enumerate}
+\end{adjustwidth}
+
+\end{adjustwidth}
+
+\paragraph{ 學到的事情 }
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        學會了如何分析更複雜的網頁
+    \item
+        學會了使用\textit{selenium}庫
+\end{enumerate}
+
+    
+\end{adjustwidth}
 \clearpage
 \paragraph{心得}
 \begin{adjustwidth}{2em}{0em}
@@ -380,6 +415,39 @@ selenium庫:
 
 \clearpage
 \subsection{ 密碼破解 }
+
+
+\paragraph{ 過程 }
+
+\hspace*{\fill}\\
+%--------flow chart 2.5------------%
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3cm][H]
+
+\node (start) [startstop] {觀察};
+\node (caculate) [process, below of=start] {計算流量};
+\node (coding) [process, below of=caculate] {打程式};
+\node (end) [process, below of=coding] {測試};
+\node (final) [startstop, below of=end] {成品};
+\node (think2) [startstop, align=center, below of=final] {了解到了設定\\密碼的重要性};
+\node (think1) [startstop, align=center, left of=think2, xshift=-3cm] {對網路安全\\有了興趣};
+\node (think3) [startstop, align=center, right of=think2, xshift=3cm] {學習到了\\許多漏洞};
+
+\draw [arrow](start) -- (caculate);
+\draw [arrow](caculate) -- (coding);
+\draw [arrow](coding) -- (end);
+\draw [arrow] (end.east) to [bend right=60] (coding.east);
+\draw [arrow](end) -- (final);
+\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think2);
+\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think1);
+\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think3);
+
+
+\end{tikzpicture}
+\end{figure}
+%--------flow chart 2.5------------%
+\clearpage
 \paragraph{ 實作動機 }
 \begin{adjustwidth}{2em}{0em}
     在學了許多的知識之後，
@@ -414,40 +482,29 @@ selenium庫:
 \end{adjustwidth}
 
 \clearpage
+\subsection{ 校內廣播 }
+
 
 \paragraph{ 過程 }
-
 \hspace*{\fill}\\
-%--------flow chart 2.5------------%
+%--------------2.5 flow chart---------------%
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=3cm][H]
-
-\node (start) [startstop] {觀察};
-\node (caculate) [process, below of=start] {計算流量};
-\node (coding) [process, below of=caculate] {打程式};
-\node (end) [process, below of=coding] {測試};
-\node (final) [startstop, below of=end] {成品};
-\node (think2) [startstop, align=center, below of=final] {了解到了設定\\密碼的重要性};
-\node (think1) [startstop, align=center, left of=think2, xshift=-3cm] {對網路安全\\有了興趣};
-\node (think3) [startstop, align=center, right of=think2, xshift=3cm] {學習到了\\許多漏洞};
-
-\draw [arrow](start) -- (caculate);
-\draw [arrow](caculate) -- (coding);
-\draw [arrow](coding) -- (end);
-\draw [arrow](end) -- (final);
-\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think2);
-\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think1);
-\draw [arrow, dash pattern=on 2pt off 3pt on 3pt off 2pt](final) -- (think3);
+\node (start) [startstop] {開始};
+\node (observe)  [process, below of=start, align=center] {觀察網頁\\登陸過程};
+\node (write_and_debug) [process,align=center, below of=observe] {寫程式\&\\debug};
+\node (end) [startstop, below of=write_and_debug] {成品};
 
 
+\draw [arrow] (start) -- (observe);
+\draw [arrow](observe) -- (write_and_debug);
+\draw [arrow] (write_and_debug) -- (end);
 \end{tikzpicture}
 \end{figure}
-%--------flow chart 2.5------------%
 
-
+%--------------2.5 flow chart---------------%
 \clearpage
-\subsection{ 校內廣播 }
 \paragraph{ 實作動機 }
 \begin{adjustwidth}{2em}{0em}
    因為我是資訊股長，
@@ -483,28 +540,6 @@ selenium庫:
     雖然不知道會不會造成安全性的問題，
     不過也是有趣的收穫。
 \end{adjustwidth}
-
-\clearpage
-\paragraph{ 過程 }
-\hspace*{\fill}\\
-%--------------2.5 flow chart---------------%
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=3cm][H]
-\node (start) [startstop] {開始};
-\node (observe)  [process, below of=start, align=center] {觀察網頁\\登陸過程};
-\node (write_and_debug) [process,align=center, below of=observe] {寫程式\&\\debug};
-\node (end) [startstop, below of=write_and_debug] {成品};
-
-
-\draw [arrow] (start) -- (observe);
-\draw [arrow](observe) -- (write_and_debug);
-\draw [arrow] (write_and_debug) -- (end);
-\end{tikzpicture}
-\end{figure}
-
-%--------------2.5 flow chart---------------%
-\clearpage
 \paragraph{改進的方向}
 \begin{adjustwidth}{2em}{0em}
 \begin{enumerate}
@@ -523,29 +558,8 @@ selenium庫:
 \clearpage
 \subsection{ 排名爬取 }
 
-\paragraph{ 實作動機 }
-\begin{adjustwidth}{2em}{0em}
-    由於我是進階助教，
-    所以每次考試之後都需要統計他們的分數，
-    每一次都要逐一的去登記，
-    由於我覺得他十分麻煩，
-    不如直接寫程式把他們的成績爬取下來。
-\end{adjustwidth}
 
-\paragraph{ 遇到的困難和解決方式 }
-\begin{adjustwidth}{2em}{0em}
-    因為登陸的問題在前面已經解決了，
-    所以這次沒有發生什麼特別的困難，
-    只是對於改進沒有什麼想法
-\end{adjustwidth}
 
-\paragraph{ 學到的事情 }
-\begin{enumerate}
-    \item 
-        對於\textit{python}的實作更加的了解
-\end{enumerate}
-
-\clearpage
 \paragraph{ 過程 }
 \hspace*{\fill}\\
 
@@ -575,6 +589,27 @@ selenium庫:
 %------2.6 flow chart-------%
 
 \clearpage
+\paragraph{ 實作動機 }
+\begin{adjustwidth}{2em}{0em}
+    由於我是進階助教，
+    所以每次考試之後都需要統計他們的分數，
+    每一次都要逐一的去登記，
+    由於我覺得他十分麻煩，
+    不如直接寫程式把他們的成績爬取下來。
+\end{adjustwidth}
+
+\paragraph{ 遇到的困難和解決方式 }
+\begin{adjustwidth}{2em}{0em}
+    因為登陸的問題在前面已經解決了，
+    所以這次沒有發生什麼特別的困難，
+    只是對於改進沒有什麼想法
+\end{adjustwidth}
+
+\paragraph{ 學到的事情 }
+\begin{enumerate}
+    \item 
+        對於\textit{python}的實作更加的了解
+\end{enumerate}
 
 \paragraph{ 可改進的方向 }
 \begin{enumerate}
@@ -624,8 +659,8 @@ selenium庫:
 
 
 \subsubsection{ 遇到的困難和解決方式 }
-\clearpage
 \begin{figure}[H]
+\centering
 \begin{tikzpicture}[
     node distance=0cm,
     global scale=0.5,
@@ -806,7 +841,6 @@ selenium庫:
 \end{tikzpicture}
 \end{figure}
 
-
 \clearpage
 \subsubsection{ 學到的事情 }
 \begin{enumerate}
@@ -860,39 +894,364 @@ selenium庫:
 \clearpage
 \section{ 遊戲}
 \label{sec::game}
-\subsection{ 貪吃蛇 (python) }
+
+\subsection{序言}
+
+做遊戲件事情我還在逐漸摸索當中，
+目前還停留在熟悉製作過程當中，
+因為大部分的遊戲整個流程都會十分的複雜，
+我現在摸索的還只是停留在實作數十年前簡單的遊戲上面，
+就已經接近目前我能處理複雜程式的極限了，
+無論是\textbf{角色的控制}、\textbf{遊戲進行的過程}、\textbf{獎勵機制}，
+每一個都需要縝密的思考，
+還有在把許多的部件一遍遍的組成起來的時候也會遇到許多問題。
+
+\subsection{遊戲基本流程}
+
+    
+\begin{figure}[H]
+
+\centering
+\begin{tikzpicture}[node distance=0cm, global scale=0.7][H]
+\def\GlobalxShift{5cm};
+\def\GlobalyShift{2cm};
+
+\node (start) [startstop] {思考程式大綱};
+
+\node (Coding_Background) [process, below of=start, yshift={-\GlobalyShift}] {做出背景};
+\node (Coding_Background_check) [decision, below of=Coding_Background, yshift={-2*\GlobalyShift}] {出現問題?};
+\node (Coding_Character) [process, below of=Coding_Background_check, yshift={-2*\GlobalyShift}] {製作角色};
+\node (Coding_Character_check) [decision, below of=Coding_Character, yshift={-2*\GlobalyShift}] {出現問題?};
+\node (Coding_GameEnd) [process, below of=Coding_Character_check, yshift={-\GlobalyShift}] {打整個流程};
+
+\coordinate (Coding_Background_check_p) at ([shift={(-1cm, 0cm)}]Coding_Background_check.west);
+\coordinate (Coding_Character_check_p) at ([shift={(-1cm, 0cm)}]Coding_Character_check.west) ;
+
+
+\draw [->] (start) -- (Coding_Background);
+\draw [->] (Coding_Background) -- (Coding_Background_check);
+\draw [->] (Coding_Background_check) -- node[right]{否} (Coding_Character);
+
+\draw (Coding_Background_check.west) -- node[above, yshift={\GlobalyShift}]{是}(Coding_Background_check_p);
+\draw [->] (Coding_Background_check_p) |- (Coding_Background);
+
+
+\draw (Coding_Character_check.west) -- node[above, yshift={\GlobalyShift}]{是} (Coding_Character_check_p);
+\draw [->] (Coding_Character_check_p) |- (Coding_Character); 
+
+\draw [->] (Coding_Character_check) --node[right]{否} (Coding_GameEnd);
+
+\draw [->] (Coding_Character) -- (Coding_Character_check);
+
+\end{tikzpicture}
+\end{figure}
+
+
 \clearpage
 \subsection{ 貪吃蛇 (c++) }
 
-\clearpage
-\section{ 網頁製作 }
-\label{ sec::website }
-\subsection{ 乘法練習網站 }
-\clearpage
-\subsection{ 決策器製作 }
-\clearpage
-\subsection{ 數學公式製作 }
+\paragraph{實作流程}
+\hspace*{\fill}\\
+
+\begin{figure}[H]
+\begin{tikzpicture}[node distance=0][H]
+
+\def\GlobalyShift{2.5cm};
+\def\GlobalxShift{5cm};
+
+%---------- Init loop ----------%
+\node (start) [startstop] {進入遊戲} ;
+\node (chose_style) [process, right of=start, xshift={\GlobalxShift}] {選擇樣式};
+\node (start_game) [process, right of=chose_style, xshift={\GlobalxShift}] {進行遊戲};
+%---------- Init loop ----------%
+
+%---------- Game loop ----------%
+
+\node (Get_Keyboard) [startstop, below of=chose_style, yshift={-1.5*\GlobalyShift}] {獲取鍵盤};
+
+%--- Apple ---%
+\node (Eat_Apple) [decision, below of=Get_Keyboard, yshift={-\GlobalyShift}] {吃到蘋果?};
+\node (Len_add) [process, below of= Eat_Apple, xshift={-\GlobalxShift/2}, yshift={-\GlobalyShift}] {長度加1};
+\node (Len_Same) [process, below of=Eat_Apple, xshift={\GlobalxShift/2}, yshift={-\GlobalyShift} ] {不變};
+\node (New_Apple) [process, below of=Len_add, yshift={-\GlobalyShift}] {新蘋果};
+\coordinate (Len_Same_p) at ([shift={(0cm, {-\GlobalyShift-0.5cm})}]Len_Same);
+%--- Apple ---%
+
+%--- Len --- %
+\node (Position_Update) [process, below of=Eat_Apple, yshift={-3*\GlobalyShift}] {位置更新}; 
+%--- Len --- %
+
+
+%--- Check Collade ---%
+\node (Check_Collade) [decision, below of=Position_Update, yshift={-\GlobalyShift}, align=center] {碰撞判斷 \\ 自己or牆壁};
+\node (Dead) [startstop, below of=Check_Collade, yshift={-\GlobalyShift}] {遊戲結束};
+\coordinate (Check_Collade_p) at ([shift={(1.5*\GlobalxShift, 0cm)}]Check_Collade);
+%--- Check Collade ---%
+
+\begin{scope} [on background layer]
+    \node[fit=(Get_Keyboard)(Eat_Apple)(Len_add)(Len_Same)(New_Apple)(Position_Update)(Check_Collade)(Dead), basic box=blue] (Game_Loop) {};
+\end{scope}
+\coordinate (Game_Loop_p) at ([shift={(0cm, {\GlobalyShift/2})}]Game_Loop.north);
+
+
+%--- Flow Chart ---%
+\draw [->] (Get_Keyboard) -- (Eat_Apple);
+\draw [->] (Eat_Apple) -- (Len_add);
+\draw [->] (Eat_Apple) -- (Len_Same);
+\draw [->] (Len_add) -- (New_Apple);
+\draw [->] (New_Apple) -- (Position_Update);
+
+
+\draw (Len_Same) -- (Len_Same_p);
+\draw [->] (Len_Same_p) -- (Position_Update);
+
+\draw [->] (Position_Update) -- (Check_Collade);
+\draw [->] (Check_Collade) --node[right]{是} (Dead);
+%--- Flow Chart ---%
+
+
+%---------- Game loop ----------%
+
+\draw (start_game) |- (Game_Loop_p);
+\draw [->] (Game_Loop_p) -- (Game_Loop.north);
+
+\draw (Check_Collade) -- (Check_Collade_p);
+\draw [->] (Check_Collade_p) |-node[right, yshift={-\GlobalyShift*2.5}]{否} (Get_Keyboard);
+
+%---------- FLow Chart ----------%
+
+\draw [->] (start) -- (chose_style);
+\draw [->] (chose_style) -- (start_game);
+
+%---------- FLow Chart ----------%
+
+
+
+% \begin{scope}[on background layer] 
+%     \node[fit=(start)(end), basic box=blue] (Game_Loop) {};
+% \end{scope}
+
+\end{tikzpicture} 
+\end{figure}
 
 \clearpage
-\section{ 應用程式製作 }
-\label{ sec::app }
-\subsection{ 搜尋單字 (半完成) }
+\paragraph{實作動機} 
+\begin{adjustwidth}{2em}{0em}
+那時候因為資訊課需要自己實作出一個專案，
+也因為我對\textbf{c++}已經熟練，
+所以我就想說可不可以透過我學過的各種語法，
+來完成最經典的遊戲\textbf{貪吃蛇}。
+\end{adjustwidth}
+
+\paragraph{遇到的困難}
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        一開始不知道怎們偵測鍵盤 $\\\implies$ 
+        上網找函式庫
+    \item
+        因為更新全局導致畫面閃爍 $\\\implies$ 
+        把更新改成局部的
+    \item
+        貪吃蛇長度太長也導致更新的次數太多 $\\\implies$ 
+        觀察貪吃蛇頭尾的移動的性質來縮減更新次數
+\end{enumerate}
+\end{adjustwidth}
+
+\paragraph{心得}
+\begin{adjustwidth}{2em}{0em}
+   因為是第一次做遊戲的原因，
+   所以我許多地方都做的十分冗長，
+   像是沒有好好的把節點的更新的邏輯做好，
+   導致在後面需要多加許多程式碼來才能達成一樣的效果，
+   對於這個簡單的小遊戲卻也用了200多行，
+   還有許多可以進步的空間。
+\end{adjustwidth}
+
+\paragraph{可以改進的方向}
+\begin{adjustwidth}{2em}{0em}
+\begin{enumerate}
+    \item 
+        之後我有學到如何變換字體顏色，
+        可以來弄一個彩色的遊戲。
+    \item 
+        其實許多函示可以把他變成\textbf{.h}檔案，
+        讓主程式更加的簡潔。
+    \item
+        對於開始遊戲有點太過於突然了，
+        可能可以加上一個教學過程
+    \item
+        可以透過寫入檔案來把遊玩的過程儲存下來，
+        讓人可以感覺到自己的進步。
+    \item
+        之後再實作的過程中應該要先把遊戲的執行流程畫出來，
+        然後依次的實作每一個小功能，
+        一步步的測試，
+        這樣才可以有效率的寫出程式。
+\end{enumerate}
+    
+\end{adjustwidth}
+
+\clearpage
+
+\subsection{ 貪吃蛇 (python) }
+
+\paragraph{實作動機}
+\begin{adjustwidth}{2em}{0em}
+    因為有用\textit{c++}做過貪吃蛇，
+    之後又因為\textit{python}越學的越多，
+    所以就開始學習\textit{pygame}。
+    也有把過程都錄成影片，
+    影片裡面也又放上我個人學習程式的感想。
+\end{adjustwidth}
+
+
+\paragraph{遇到的困難和解決方式}
+\begin{adjustwidth}{2em}{0em}
+    因之前有稍微學習過\textit{pygame}，
+    也有試過做出一點小專案，
+    困難相對沒有那麼多。
+    \begin{enumerate}
+        \item 
+            因為在\textit{pygame}裡是直接進行畫面渲染，
+            所以要加上文字就變得相對較困難。
+            $\\\implies$ 從網路上找到可以執行的程式碼學習。
+    \end{enumerate}
+\end{adjustwidth}
+
+\paragraph{心得}
+\begin{adjustwidth}{2em}{0em}
+    在兩次的比較之中，
+    我很明確的感受到\textit{python}和\textit{c++}的差別，
+    使用\textit{c++}時，
+    我寫了\textbf{200多行}，
+    \textit{python}則是\textbf{100多行}，
+    做出來的成品也漂亮了許多，
+    不但有\textbf{色彩}、\textbf{操作也更順暢}、也可以畫出\textbf{圓形}。
+    但也不是說\textit{c++}就一無是處，
+    \textit{c++}產生出來的檔案十分的小，不到\textbf{1MB}，
+    而\textit{python}則是\textbf{2、30MB}，
+    所以我想如果遊戲在做大一點的話，
+    可能\textit{c++}的優勢會比\textit{python}好許多。
+\end{adjustwidth}
+
+\begin{center}
+    
+\begin{tabular}{l|*{5}{|l}l}
+    \diagbox{\textbf{語言}}{\textbf{項目}}
+                      & 學習難度 & 程式碼複雜度 & 執行檔大小                          & 執行速度  & 使用時機                   \\\hline\hline
+    \textit{c++}      & 高       & 高           & 較小                                & 快       & 需要效能、大專案           \\\hline 
+    \textit{python}   & 低       & 低           & 較大(使用\textit{pyinstasller})     & 慢       & 小遊戲、中小型專案 
+\end{tabular}
+
+\end{center}
 
 
 \clearpage
-\section{ manim 動畫製作 }
-\label{ sec::animate }
-\subsection{ 餘弦證明動畫 }
+
+\section{未來展望}
+\noindent 在經過這一年之後，
+我逐漸的清楚接下來需要做的事情。
+大概有以下幾點
+\renewcommand{\labelenumii}{\alph{enumii}.}
+\begin{enumerate}
+    \item 想學的程式語言 
+    \begin{enumerate}
+        \item dark       ( 0\% ) 
+        \item javascript ( 50\% )
+    \end{enumerate}
+
+    \item 想做的專案
+    \begin{enumerate}
+        \item 寫出一個2D遊戲
+        \item 架設一個自己的網站
+        \item 寫出一個物理模擬器
+        \item 做出一個自己的應用程式
+    \end{enumerate}
+
+    \item 想參加的比賽
+    \begin{enumerate}
+        \item 資訊奧林匹亞(TOI)
+        \item 全國資訊學科能力競賽
+        \item 網際網路程式設計全國大賽(NPSC)
+    \end{enumerate}
+
+    \item 其他
+    \begin{enumerate}
+        \item 紀錄寫專案的過程
+        \item 把之前的專案完善好
+        \item 記錄下每一個專案的時間
+        \item 在每一次做專案之前都先做計畫表和流程圖
+        \item 寫完專案後都要寫一篇心得統整自己的收穫
+    \end{enumerate}
+
+\end{enumerate}
+
 \clearpage
-\subsection{ 圓周弦與弧的性質 }
+\section{結語}
+
+\vspace*{2em}
+在這一年的旅途中，
+我的好奇心不斷的驅使我去做我從未做過的事物，
+如同冒險一般，
+雖然旅途中總是會遇到許多的不如意，
+但只要花時間，
+一次次的去嘗試錯誤、思考新作法，
+把自己的創意投入每一件事物，
+最後的收獲一定都是絢麗的。
+
+\vspace*{2em}
+我十分的感謝同學，
+同學們不經意間說出的話語總是能讓我豁然開朗，
+在我遇到瓶頸的時候也會聽我訴苦，
+在\textbf{debug}很無聊的時候也會陪伴我，
+讓我可以完成一件件我喜歡的事情，
+把內心的想法逐漸塑造。
+
+\vspace*{2em}
+我也十分慶幸我生活在這資訊充足的世界，
+無止盡的滿足我的好奇心，
+無論是什麼千奇百怪的問題，
+總是存在解答，
+也提供了無數的方向讓我去探索，
+縱使我現在的能力還不足以成為回答者，
+但我仍會持續的精進自我，
+期許能為世界帶來改變。
 
 
+\vspace*{2em}
+\noindent 
+時光荏苒，
+高中生活如流水飛逝而去，
+在這短暫的時光當中，
+我想....
 
-\clearpage
-\section{ 人工智慧 }
-\label{ sec::AI }
-\subsection{ MINST手寫辨識 }
-\clearpage
-\subsection{ 個人思考 }
+\vspace*{2em}
+\begin{center}
+    
+\begin{spacing}{2}
+    
+\begin{tabular}{l}
+以靈動的指尖， \\
+編織出斑斕的生活。 \\
+以自身的渺小，\\
+緊握住龐大的夢想。 \\
+以無數的挫折，\\
+澆灌出成功的花田。 \\
+以獨有的創意， \\
+遨遊在資訊的海洋。 \\
+\end{tabular}
+\end{spacing}
+\end{center}
+
+\vspace*{2em}
+\noindent
+在剩下的兩年中，
+我會盡全力的做好每一件事，
+愉快的遨遊在資訊的海洋中。\\
+我想，
+無論成功與否。\\
+往後回首過去時，
+一定都是一段快樂的回憶。
 
 \end{document}
